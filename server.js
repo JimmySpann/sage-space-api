@@ -10,7 +10,7 @@ const app = express();
 
 // CORS - Cross Origi Resource Sharing
 app.use(cors({
-  origin: [`http://localhost:3001`,`http://localhost:3002`],
+  origin: [`http://localhost:3001`,`https://what-is-this-abomination.herokuapp.com/`],
   methods: "GET,POST,PUT,DELETE",
   // credentials: true, // allows the session cookie to be sent back and forth from server to client
   optionsSuccessStatus: 200 // some legacy browsers choke on satus 204
