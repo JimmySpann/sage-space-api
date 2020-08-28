@@ -16,4 +16,7 @@ mongoose.connect(connectionString, configOptions)
 
 module.exports = {
     User: require('./User'),
+    Task: require('./Task'),
+    Note: require('./Note'),
+
 };

@@ -23,6 +23,9 @@ app.use(express.json());
 // middleware - API routes
 // Auth Routes
 app.use('/api/v1/auth', routes.auth);
+app.use('/api/v1/tasks', routes.tasks);
+app.use('/api/v1/notes', routes.notes);
+
 
 // connection
 app.listen(port, () => console.log(`Server is running on port ${port}`));

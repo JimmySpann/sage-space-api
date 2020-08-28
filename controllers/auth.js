@@ -15,9 +15,12 @@ const register = async (req, res) => {
     return res.status(400).json({message: 'Password must be at least 4 characters long'});
   }
 
+  let body = req.body
+  body.email = req.body.email.toLowerCase();
+
   try {
     // CHECK IF EMAIL ALREADY REGISTERED
-    const foundUser = await db.User.findOne({ email: req.body.email });
+    const foundUser = await db.User.findOne({ email: body.email });
 
     // SEND ERROR IF FOUND USER
     if (foundUser) {
@@ -30,9 +33,9 @@ const register = async (req, res) => {
     // CREATE SALT FOR HASH
     const salt = await bcrypt.genSalt(10);
     // HASH USER PASSWORD
-    const hash = await bcrypt.hash(req.body.password, salt);
+    const hash = await bcrypt.hash(body.password, salt);
     // CREATE USER WITH HASHED PASSWORD
-    await db.User.create({ ...req.body, password: hash });
+    await db.User.create({ ...body, password: hash });
 
     // SEND SUCCESS
     return res.status(201).json({status: 201, message: "success"});
@@ -49,9 +52,12 @@ const register = async (req, res) => {
 // LOGIN CONTROLLER
 const login = async (req, res) => {
   console.log(req.body);
+  let body = req.body;
+  body.email = req.body.email.toLowerCase();
+  console.log(body);
   try {
     // FIND USER BY EMAIL (OR USERNAME)
-    const foundUser = await db.User.findOne({ email: req.body.email });
+    const foundUser = await db.User.findOne({ email: body.email });
     // const foundUser = await db.User.findOne({ username: req.body.username });
 
     if (!foundUser) {
@@ -62,7 +68,7 @@ const login = async (req, res) => {
     }
 
     // CHECK IF PASSWORDS MATCH
-    const isMatch = await bcrypt.compare(req.body.password, foundUser.password);
+    const isMatch = await bcrypt.compare(body.password, foundUser.password);
     if (!isMatch) {
       return res.status(400).json({
         status: 400,
@@ -73,7 +79,7 @@ const login = async (req, res) => {
     // CREATE TOKEN PAYLOAD
     const payload = {id: foundUser._id};
     const secret = process.env.JWT_SECRET;
-    const expiration = {expiresIn: "1h"};
+    const expiration = {expiresIn: "3h"};
     
     // SIGN TOKEN
     const token = await jwt.sign(payload, secret, expiration);
