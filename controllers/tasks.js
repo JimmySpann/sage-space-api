@@ -1,18 +1,18 @@
 const db = require('../models');
 
 const index = (req, res) => {
-  db.Task.find({}, (err, foundGames) => {
+  db.Task.find({}, (err, foundTasks) => {
     if (err) console.log('Error in games#index:', err);
-
-    res.status(200).json(foundGames);
+    console.log(foundTasks)
+    res.status(200).json(foundTasks);
   });
 };
 
 const show = (req, res) => {
-  db.Task.findById(req.params.id, (err, foundGame) => {
+  db.Task.findById(req.params.id, (err, foundTask) => {
     if (err) console.log('Error in games#show:', err);
 
-    res.status(200).send(foundGame);
+    res.status(200).send(foundTask);
   });
 };
 
