@@ -5,11 +5,16 @@ const taskSchema = mongoose.Schema({
     type: String,
     required: [true, 'Task name needed'],
   },
+  
   description: {
     type: String,
   },
   date_completed: {
     type: Date
+  },
+  deleted: {
+    type: Boolean,
+    required: [true]
   },
   user: [{
     type: mongoose.Schema.Types.ObjectId,

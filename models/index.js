@@ -19,4 +19,5 @@ module.exports = {
     Task: require('./Task'),
     Note: require('./Note'),
     WorkTime: require('./WorkTime'),
+    Event: require('./Event')
 };
