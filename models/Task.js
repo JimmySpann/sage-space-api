@@ -13,7 +13,8 @@ const taskSchema = mongoose.Schema({
   },
   deleted: {
     type: Boolean,
-    required: [true]
+    required: [true],
+    default: false,
   },
   user: [{
     type: mongoose.Schema.Types.ObjectId,

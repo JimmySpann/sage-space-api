@@ -11,18 +11,17 @@ const index = (req, res) => {
 const show = (req, res) => {
   db.List.findById(req.params.id, (err, foundList) => {
     if (err) console.log('Error in games#show:', err);
-
+  }).populate('tasks').exec((err, foundList) => {
     res.status(200).send(foundList);
   });
 };
 
 const create = (req, res) => {
-  console.log(req.currentUser);
-  // db.List.create(req.body, (err, savedList) => {
-  //   if (err) console.log('Error in games#create:', err);
+  db.List.create(req.body, (err, savedList) => {
+    if (err) console.log('Error in games#create:', err);
 
-    res.status(200).json(req.currentUser);
-  // });
+    res.status(200).json(savedList);
+  });
 };
 
 const update = (req, res) => {
@@ -34,6 +33,24 @@ const update = (req, res) => {
     }
 
     res.json(updatedGame);
+  });
+};
+
+const addTaskToList = (req, res) => {
+  db.List.findById(req.listId, (err, foundList) => {
+    if (err) console.log('Error in games#show:', err);
+    const listId = req.listId;
+    const taskId = req.taskId;
+    console.log('foundList', foundList, err);
+    foundList.tasks.push(taskId);
+    db.List.findByIdAndUpdate(listId, foundList, { new: true }, (err, updatedList) => {
+      if (err) console.log('Error in games#update:', err);
+  
+      if (!updatedList) {
+        // res.status(400).json({message: `Could not find List with id ${req.params.id}`});
+      }
+    })
+    // res.status(200).json(updatedList);
   });
 };
 
@@ -52,4 +69,5 @@ module.exports = {
     create,
     update,
     destroy,
+    addTaskToList,
 };

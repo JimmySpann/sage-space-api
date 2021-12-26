@@ -5,9 +5,10 @@ const listSchema = mongoose.Schema({
     type: String,
     required: [true, 'List name needed'],
   },
-  Task: [{
+  tasks: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Task'
+    ref: 'Task',
+    default: [],
   }]
 }, {timestamps: true});
 

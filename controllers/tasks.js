@@ -1,4 +1,5 @@
 const db = require('../models');
+const Lists = require('./lists')
 
 const index = (req, res) => {
   db.Task.find({}, (err, foundTasks) => {
@@ -17,12 +18,18 @@ const show = (req, res) => {
 };
 
 const create = (req, res) => {
-  console.log(req.currentUser);
-  // db.Task.create(req.body, (err, savedTask) => {
-  //   if (err) console.log('Error in games#create:', err);
+  req.body.user = [req.currentUser.id];
+  db.Task.create(req.body, (err, savedTask) => {
+    if (err) console.log('Error in games#create:', err);
+    const listId = req.body.list;
+    const taskId = savedTask._id;
 
-    res.status(200).json(req.currentUser);
-  // });
+    Lists.addTaskToList({ listId, taskId }, (err, savedTask) => {
+    });
+    
+    res.status(200).json(savedTask);
+  });
+
 };
 
 const update = (req, res) => {

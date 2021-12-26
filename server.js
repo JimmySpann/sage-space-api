@@ -27,6 +27,7 @@ app.use('/api/v1/tasks', routes.tasks);
 app.use('/api/v1/notes', routes.notes);
 app.use('/api/v1/work-time', routes.workTime);
 app.use('/api/v1/events', routes.events);
+app.use('/api/v1/lists', routes.lists);
 
 
 
