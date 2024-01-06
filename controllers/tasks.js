@@ -21,7 +21,8 @@ const create = (req, res) => {
   req.body.user = [req.currentUser.id];
   db.Task.create(req.body, (err, savedTask) => {
     if (err) console.log('Error in games#create:', err);
-    const listId = req.body.list;
+    const listId = savedTask.list;
+    console.log('list', savedTask);
     const taskId = savedTask._id;
 
     Lists.addTaskToList({ listId, taskId }, (err, savedTask) => {

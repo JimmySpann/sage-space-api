@@ -11,7 +11,12 @@ const taskSchema = mongoose.Schema({
   date_completed: {
     type: Date
   },
-  deleted: {
+  isHidden: {
+    type: Boolean,
+    required: [true],
+    default: false,
+  },
+  isCompleted: {
     type: Boolean,
     required: [true],
     default: false,

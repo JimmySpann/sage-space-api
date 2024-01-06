@@ -3,26 +3,24 @@ const jwt = require("jsonwebtoken");
 const db = require('../models');
 
 
-// REGISTER CONTROLLER
 const register = async (req, res) => {
-  // VALIDATE FIELD INPUT
-  if (!req.body.username || !req.body.email || !req.body.password) {
+  const { displayName, email, password } = req.body
+
+  if (!displayName || !email || !password) {
     return res.status(400).json({message: 'All fields are required. Please try again'});
   }
 
   // VALIDATE PASSWORD LENGTH
-  if (req.body.password.length < 4) {
+  if (password.length < 4) {
     return res.status(400).json({message: 'Password must be at least 4 characters long'});
   }
 
   let body = req.body
-  body.email = req.body.email.toLowerCase();
+  body.email = email.toLowerCase();
 
   try {
-    // CHECK IF EMAIL ALREADY REGISTERED
     const foundUser = await db.User.findOne({ email: body.email });
 
-    // SEND ERROR IF FOUND USER
     if (foundUser) {
       res.status(400).json({
         status: 400,
@@ -30,14 +28,11 @@ const register = async (req, res) => {
       });
     }
 
-    // CREATE SALT FOR HASH
-    const salt = await bcrypt.genSalt(10);
-    // HASH USER PASSWORD
+    const salt = await bcrypt.genSalt(15);
     const hash = await bcrypt.hash(body.password, salt);
-    // CREATE USER WITH HASHED PASSWORD
+
     await db.User.create({ ...body, password: hash });
 
-    // SEND SUCCESS
     return res.status(201).json({status: 201, message: "success"});
   } catch (error) {
     console.log(error);
@@ -49,21 +44,18 @@ const register = async (req, res) => {
 };
 
 
-// LOGIN CONTROLLER
 const login = async (req, res) => {
-  console.log(req.body);
-  let body = req.body;
-  body.email = req.body.email.toLowerCase();
-  console.log(body);
   try {
+    let body = req.body;
+    body.email = req.body.email.toLowerCase();
+
     // FIND USER BY EMAIL (OR USERNAME)
     const foundUser = await db.User.findOne({ email: body.email });
-    // const foundUser = await db.User.findOne({ username: req.body.username });
 
     if (!foundUser) {
       return res.status(400).json({
         status: 400,
-        message: "Username or password is incorrect"
+        message: "Email or password is incorrect"
       });
     }
 
@@ -72,7 +64,7 @@ const login = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({
         status: 400,
-        message: "Username or password is incorrect",
+        message: "Email or password is incorrect",
       });
     }
 
@@ -83,9 +75,16 @@ const login = async (req, res) => {
     
     // SIGN TOKEN
     const token = await jwt.sign(payload, secret, expiration);
-
+    
+    const user = {
+      token,
+      email: foundUser.email,
+      displayName: foundUser.displayName,
+      imageURL: foundUser.imageURL
+    };
+    
     // SEND SUCCESS WITH TOKEN
-    res.status(200).json({token});
+    res.status(200).json(user);
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -96,26 +95,26 @@ const login = async (req, res) => {
 };
 
 
-// REGISTER CONTROLLER
 const verify = async (req, res) => {
-  // GET TOKEN FROM REQUEST HEADER
   const token = req.headers['authorization'];
   console.log(req.headers)
   console.log('Verify Token ---> ', token);
 
-  // VERIFY TOKEN
   jwt.verify(token, process.env.JWT_SECRET, (err, decodedUser) => {
     if (err || !decodedUser) {
       return res.status(401).json({
         message: 'You are not authorized. Please login and try again'
       });
     }
+    console.log(decodedUser);
+    // const foundUser = await db.User.findOne({ email: body.email });
+    // const user = {
+    //   token,
+    //   email: foundUser.email,
+    //   displayName: foundUser.displayName,
+    //   imageURL: foundUser.imageURL
+    // };
 
-    // ADD PAYLOAD TO REQ OBJECT
-    req.currentUser = decodedUser;
-
-    // ********** --- --- **********
-    // SEND SUCCESS WITH TOKEN AS VERIFY ROUTE
     res.status(200).json({user: decodedUser});
 
     // ********** --- --- **********
