@@ -3,7 +3,6 @@ const db = require('../models');
 const index = (req, res) => {
   db.Note.find({user: req.currentUser.id}, (err, foundNotes) => {
     if (err) console.log('Error in notes#index:', err);
-    console.log(req.currentUser, foundNotes)
     res.status(200).json(foundNotes);
   });
 };
@@ -16,7 +15,6 @@ const show = (req, res) => {
 };
 
 const create = (req, res) => {
-  console.log(req.currentUser)
   req.body.user = [req.currentUser.id]
   db.Note.create(req.body, (err, savedNotes) => {
     if (err) console.log('Error in notes#create:', err);
