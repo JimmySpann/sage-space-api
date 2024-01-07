@@ -4,8 +4,11 @@ const Lists = require('./lists')
 const index = (req, res) => {
   db.Task.find({}, (err, foundTasks) => {
     if (err) console.log('Error in games#index:', err);
-    console.log(foundTasks)
-    res.status(200).json(foundTasks);
+    const list = {
+      name: 'First Ever Task List',
+      tasks: foundTasks
+    }
+    res.status(200).json(list);
   });
 };
 

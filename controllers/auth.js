@@ -69,7 +69,10 @@ const login = async (req, res) => {
     }
 
     // CREATE TOKEN PAYLOAD
-    const payload = {id: foundUser._id};
+    const payload = {
+      id: foundUser._id,
+      email: foundUser.email,
+    };
     const secret = process.env.JWT_SECRET;
     const expiration = {expiresIn: "3h"};
     
@@ -97,25 +100,22 @@ const login = async (req, res) => {
 
 const verify = async (req, res) => {
   const token = req.headers['authorization'];
-  console.log(req.headers)
-  console.log('Verify Token ---> ', token);
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, decodedUser) => {
+  jwt.verify(token, process.env.JWT_SECRET, async (err, decodedUser) => {
     if (err || !decodedUser) {
       return res.status(401).json({
         message: 'You are not authorized. Please login and try again'
       });
     }
-    console.log(decodedUser);
-    // const foundUser = await db.User.findOne({ email: body.email });
-    // const user = {
-    //   token,
-    //   email: foundUser.email,
-    //   displayName: foundUser.displayName,
-    //   imageURL: foundUser.imageURL
-    // };
+    const foundUser = await db.User.findOne({ email: decodedUser.email });
+    const user = {
+      token,
+      email: foundUser.email,
+      displayName: foundUser.displayName,
+      imageURL: foundUser.imageURL
+    };
 
-    res.status(200).json({user: decodedUser});
+    res.status(200).json({user: user});
 
     // ********** --- --- **********
     // CALL NEXT AS MIDDLEWARE FUNCTION

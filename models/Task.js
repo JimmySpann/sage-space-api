@@ -25,10 +25,6 @@ const taskSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   }],
-  list: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'List'
-  },
 }, {timestamps: true});
 
 const Task = mongoose.model('Task', taskSchema);
