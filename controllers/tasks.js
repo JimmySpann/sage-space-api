@@ -22,7 +22,6 @@ const show = (req, res) => {
 
 const create = (req, res) => {
   req.body.user = [req.currentUser.id];
-  console.log(req.body)
   db.Task.create(req.body, (err, savedTask) => {
     if (err) {
       return res.status(500).json({
@@ -46,22 +45,27 @@ const create = (req, res) => {
 };
 
 const update = (req, res) => {
-  db.Task.findByIdAndUpdate(req.params.id, req.body, { new: true }, (err, updatedGame) => {
-    if (err) console.log('Error in tasks#update:', err);
-
-    if (!updatedGame) {
-      res.status(400).json({message: `Could not find Game with id ${req.params.id}`});
+  db.Task.findByIdAndUpdate(req.params.id, req.body, { new: true }, (err, updatedTask) => {
+    if (err) {
+      return res.status(500).json({
+        status: 500,
+        message: "Something went wrong. Please try again",
+      });
     }
 
-    res.json(updatedGame);
+    if (!updatedTask) {
+      return res.status(400).json({message: `Could not find Task with id ${req.params.id}`});
+    }
+
+    res.json(updatedTask);
   });
 };
 
 const destroy = (req, res) => {
-  db.Task.findByIdAndDelete(req.params.id, (err, deletedGame) => {
+  db.Task.findByIdAndDelete(req.params.id, (err, deletedTask) => {
     if (err) console.log('Error in tasks#destroy:', err);
 
-    res.status(200).json(deletedGame);
+    res.status(200).json(deletedTask);
   });
 };
 
