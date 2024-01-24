@@ -1,4 +1,4 @@
-const db = require('../models');
+import db from '../models/index.js';
 
 const index = (req, res) => {
   db.Note.find({user: req.currentUser.id}, (err, foundNotes) => {
@@ -44,10 +44,12 @@ const destroy = (req, res) => {
 };
 
 
-module.exports = {
+const controllers = {
     index,
     show,
     create,
     update,
     destroy,
 };
+
+export default controllers;

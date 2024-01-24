@@ -1,7 +1,8 @@
-// imports
-const router = require('express').Router();
-const ctrl = require('../controllers');
-const authRequired = require('../middleware/authRequired');
+import { Router } from 'express';
+import ctrl from '../controllers/index.js';
+import authRequired from '../middleware/authRequired.js';
+
+const router = Router();
 
 // routes
 router.get('/', authRequired, ctrl.lists.index);
@@ -10,5 +11,4 @@ router.post('/', authRequired, ctrl.lists.create);
 router.put('/:id', authRequired, ctrl.lists.update);
 router.delete('/:id', authRequired, ctrl.lists.destroy);
 
-// exports
-module.exports = router;
+export default router;

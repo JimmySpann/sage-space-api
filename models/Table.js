@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const labelSchema = mongoose.Schema({
     name: {
@@ -28,4 +28,4 @@ const tableSchema = mongoose.Schema({
 
 const Table = mongoose.model('Table', tableSchema);
 
-module.exports = Table;
+export default Table;

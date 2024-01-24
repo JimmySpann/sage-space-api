@@ -1,6 +1,8 @@
 // imports
-const router = require('express').Router();
-const ctrl = require('../controllers');
+import { Router } from 'express';
+import ctrl from '../controllers/index.js';
+
+const router = Router();
 
 // Current Path = '/api/v1/auth'
 
@@ -8,5 +10,4 @@ router.post('/register', ctrl.auth.register);
 router.post('/login', ctrl.auth.login);
 router.get('/verify', ctrl.auth.verify);
 
-// exports
-module.exports = router;
+export default router;

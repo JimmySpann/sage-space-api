@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const workTimeSchema = mongoose.Schema({
   start_day: {
@@ -19,4 +19,4 @@ const workTimeSchema = mongoose.Schema({
 
 const User = mongoose.model('WorkTime', workTimeSchema);
 
-module.exports = User;
+export default User;

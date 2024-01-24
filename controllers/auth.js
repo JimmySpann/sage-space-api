@@ -1,6 +1,6 @@
-const bcrypt = require('bcryptjs');
-const jwt = require("jsonwebtoken");
-const db = require('../models');
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import db from '../models/index.js';
 
 
 const register = async (req, res) => {
@@ -124,8 +124,10 @@ const verify = async (req, res) => {
 };
 
 
-module.exports = {
+const controllers = {
   register,
   login,
   verify,
 };
+
+export default controllers;

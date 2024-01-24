@@ -1,14 +1,14 @@
-// imports
-const express = require('express');
-const cors = require('cors');
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
+import express from 'express';
+import cors from 'cors';
+import routes from './routes/index.js';
+import dotenv from 'dotenv';
 
-const routes = require('./routes');
+dotenv.config();
+
 const port = process.env.PORT;
 const app = express();
 app.use(cors({
-  origin: [`http://localhost:3000`,`https://sage-space.jimmyleespann.com`],
+  origin: process.env.NODE_ENV === 'local' ? ['http://localhost:3000'] : ['https://sage-space.jimmyleespann.com'],
   methods: "GET,POST,PUT,DELETE",
   // credentials: true, // allows the session cookie to be sent back and forth from server to client
   optionsSuccessStatus: 200 // some legacy browsers choke on satus 204
