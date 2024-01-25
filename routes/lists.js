@@ -4,7 +4,6 @@ import authRequired from '../middleware/authRequired.js';
 
 const router = Router();
 
-// routes
 router.get('/', authRequired, ctrl.lists.index);
 router.get('/:id', authRequired, ctrl.lists.show);
 router.post('/', authRequired, ctrl.lists.create);
