@@ -78,6 +78,17 @@ const update = async (req, res) => {
 const destroy = async (req, res) => {
   try {
     const deletedList = await db.List.findByIdAndDelete(req.params.id).catch(error => { throw error });
+
+    if (deletedList) {
+      const distinctItems = await db.List.distinct('items');
+      await deletedList.items.forEach(async item => {
+        const doesItemIdExistElseWhere = distinctItems.includes(item);
+        if (!doesItemIdExistElseWhere) {
+          await db.Task.findByIdAndDelete(item).catch(error => { throw error });
+        }
+      });
+    }
+
     res.status(200).json(deletedList);
   } 
   catch (e) {

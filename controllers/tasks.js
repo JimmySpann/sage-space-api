@@ -67,29 +67,37 @@ const create = async (req, res) => {
   }
 };
 
-const update = (req, res) => {
-  db.Task.findByIdAndUpdate(req.params.id, req.body, { new: true }, (err, updatedTask) => {
-    if (err) {
-      return res.status(500).json({
-        status: 500,
-        message: "Something went wrong. Please try again",
-      });
-    }
+const update = async (req, res) => {
+  try {
+    const updatedTask = await db.Task.findByIdAndUpdate(req.params.id, req.body, { new: true }).catch(error => { throw error });
 
     if (!updatedTask) {
       return res.status(400).json({message: `Could not find Task with id ${req.params.id}`});
     }
 
     res.json(updatedTask);
-  });
+  }
+  catch (error) {
+    logger.error(error);
+    return res.status(500).json({
+      status: 500,
+      message: "Something went wrong. Please try again",
+    });
+  }
 };
 
-const destroy = (req, res) => {
-  db.Task.findByIdAndDelete(req.params.id, (err, deletedTask) => {
-    if (err) console.log('Error in tasks#destroy:', err);
-
+const destroy = async (req, res) => {
+  try {
+    const deletedTask = await db.Task.findByIdAndDelete(req.params.id).catch(error => { throw error });
     res.status(200).json(deletedTask);
-  });
+  }
+  catch (error) {
+    logger.error(error);
+    return res.status(500).json({
+      status: 500,
+      message: "Something went wrong. Please try again",
+    });
+  }
 };
 
 
