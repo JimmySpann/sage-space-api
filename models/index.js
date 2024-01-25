@@ -1,9 +1,6 @@
 import mongoose from 'mongoose';
 import User from './User.js';
 import Task from './Task.js';
-import Note from './Note.js';
-import WorkTime from './WorkTime.js';
-import Event from './Event.js';
 import List from './List.js';
 import dotenv from 'dotenv';
 
@@ -22,9 +19,6 @@ mongoose.connect(connectionString, configOptions)
 const controllers = {
     User,
     Task,
-    Note,
-    WorkTime,
-    Event,
     List
 };
 
