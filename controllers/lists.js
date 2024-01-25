@@ -1,5 +1,7 @@
 import db from '../models/index.js';
 import logger from '../lib/logger.js';
+import { checkUserPermissions } from '../lib/permissions.js'
+import { handleResError } from '../lib/handleRes.js'
 
 const index = async (req, res) => {
   try {
@@ -10,27 +12,24 @@ const index = async (req, res) => {
       
     res.status(200).json(foundLists);
   } catch(error) {
-    logger.error(error);
-    res.status(500).json({
-      status: 500,
-      message: "Something went wrong. Please try again",
-    });
+    const message = 'Something went wrong. Please try again';
+    handleResError(res, error, message, 500);
   }
 };
 
 const show = (req, res) => {
-  db.List.findById(req.params.id, (err, foundList) => {
-    if (err) console.log('Error in lists#show:', err);
-  }).populate('tasks').exec((err, foundList) => {
-    res.status(200).send(foundList);
-  });
+  // db.List.findById(req.params.id, (err, foundList) => {
+  //   if (err) console.log('Error in lists#show:', err);
+  // }).populate('tasks').exec((err, foundList) => {
+  //   res.status(200).send(foundList);
+  // });
 };
 
 const create = async (req, res) => {
   try {
     const { body, currentUser } = req;
     body.users = [{
-      id: req.currentUser.id,
+      id: currentUser.id,
       role: 'owner'
     }];
 
@@ -48,36 +47,41 @@ const create = async (req, res) => {
     logger.info(`${body.type} list created by ${currentUser.email}`);
     res.status(200).json(savedList);
   } catch (error) {
-    logger.error(err);
-    res.status(500).json({
-      status: 500,
-      message: "Something went wrong. Please try again",
-    });
+    const message = 'Something went wrong. Please try again';
+    handleResError(res, error, message, 500);
   }
 };
 
 const update = async (req, res) => {
   try {
-    const updatedList = await db.List.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const { body, currentUser, params } = req;
+    delete body.users; // no permission changes;
 
-    if (!updatedList) {
-      res.status(400).json({message: `Could not find List with id ${req.params.id}`});
+    const permissionsError = await checkUserPermissions(params.id, currentUser, ['owner']);
+    if (permissionsError) {
+      return res.status(permissionsError.status).json({ message: permissionsError.message })
     }
+
+    const updatedList = await db.List.findByIdAndUpdate(params.id, body, { new: true }).catch(error => { throw error });
 
     res.status(200).json(updatedList);
   }
   catch (error) {
-    logger.error(err);
-    return res.status(500).json({
-      status: 500,
-      message: "Something went wrong. Please try again",
-    });
+    const message = 'Something went wrong. Please try again';
+    handleResError(res, error, message, 500);
   }
 };
 
 const destroy = async (req, res) => {
   try {
-    const deletedList = await db.List.findByIdAndDelete(req.params.id).catch(error => { throw error });
+    const { currentUser, params } = req;
+
+    const permissionsError = await checkUserPermissions(params.id, currentUser, ['owner']);
+    if (permissionsError) {
+      return res.status(permissionsError.status).json({ message: permissionsError.message })
+    }
+
+    const deletedList = await db.List.findByIdAndDelete(params.id).catch(error => { throw error });
 
     if (deletedList) {
       const distinctItems = await db.List.distinct('items');
@@ -92,15 +96,11 @@ const destroy = async (req, res) => {
     res.status(200).json(deletedList);
   } 
   catch (e) {
-    logger.error(err);
-    res.status(500).json({
-      status: 500,
-      message: "Something went wrong. Please try again",
-    });
+    const message = 'Something went wrong. Please try again';
+    handleResError(res, error, message, 500);
   }
 
 };
-
 
 const controllers = {
     index,
