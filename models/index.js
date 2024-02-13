@@ -2,6 +2,8 @@ import mongoose from 'mongoose';
 import User from './User.js';
 import Task from './Task.js';
 import List from './List.js';
+import AiAgent from './AiAgent.js';
+import Habit from './Habit.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -19,7 +21,9 @@ mongoose.connect(connectionString, configOptions)
 const controllers = {
     User,
     Task,
-    List
+    List,
+    AiAgent,
+    Habit
 };
 
 export default controllers;

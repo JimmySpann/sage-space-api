@@ -9,16 +9,13 @@ const create = async (req, res) => {
     // add currentUser as user in task (not used)
     body.user = [currentUser.id];
 
-    // handle checkUserPermissions to use list
     const permissionsError = await checkUserPermissions(body.listId, currentUser, ['owner', 'edit']);
     if (permissionsError) {
       return res.status(permissionsError.status).json({ message: permissionsError.message })
     }
 
-    // create task
     const createdTask = await db.Task.create(body).catch(error => { throw error });
 
-    // find list and update with new task
     const foundList = await db.List.findById(body.listId).catch(error => { throw error });
     foundList.items.push(createdTask._id);
     const updatedList = await db.List.findByIdAndUpdate(body.listId, foundList, { new: true }).catch(error => { throw error });
@@ -27,7 +24,6 @@ const create = async (req, res) => {
       return handleResError(res, error, message, 500);
     };
 
-    // parse task sent to user
     const parsedTask = {
       _id: createdTask._id,
       name: createdTask.name,
@@ -38,7 +34,6 @@ const create = async (req, res) => {
       listId: foundList._id
     };
 
-    // send task back to user
     res.status(200).json(parsedTask);
   }
   catch (error) {
@@ -51,19 +46,16 @@ const update = async (req, res) => {
   try {
     const { params, body, currentUser } = req;
 
-    // handle checkUserPermissions to use list
     const permissionsError = await checkUserPermissions(body.listId, currentUser, ['owner', 'edit']);
     if (permissionsError) {
       return res.status(permissionsError.status).json({ message: permissionsError.message })
     }
 
-    // update task
     const updatedTask = await db.Task.findByIdAndUpdate(params.id, body, { new: true }).catch(error => { throw error });
     if (!updatedTask) {
       return res.status(400).json({message: `Could not find Task with id ${params.id}`});
     }
 
-    // send updatedTask to user
     res.json(updatedTask);
   }
   catch (error) {
