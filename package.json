@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "engines": {
-    "node": "21.x",
+    "node": "20.x",
     "npm": "10.x"
   },
   "type": "module",
@@ -24,7 +24,6 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.1.0",
     "nodemon": "^3.0.3",
-    "openai": "^4.28.0",
-    "vlc-static": "^2.0.0"
+    "openai": "^4.28.0"
   }
 }
