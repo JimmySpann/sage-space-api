@@ -10,9 +10,7 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js",
-    "build": "cd client && npm run build",
-    "install": "cd client && npm install"
+    "dev": "nodemon server.js"
   },
   "author": "GA SEI",
   "license": "ISC",
@@ -26,6 +24,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.1.0",
     "nodemon": "^3.0.3",
-    "openai": "^4.28.0"
+    "openai": "^4.28.0",
+    "vlc-static": "^2.0.0"
   }
 }
