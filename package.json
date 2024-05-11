@@ -10,7 +10,9 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "build": "cd client && npm run build",
+    "install": "cd client && npm install"
   },
   "author": "GA SEI",
   "license": "ISC",
