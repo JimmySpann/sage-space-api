@@ -13,6 +13,7 @@ app.use(cors({
   // credentials: true, // allows the session cookie to be sent back and forth from server to client
   optionsSuccessStatus: 200 // some legacy browsers choke on satus 204
 }));
+app.options('*', cors());
 
 // middleware - JSON parsing
 app.use(express.urlencoded({extended: false}));
