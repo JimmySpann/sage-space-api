@@ -4,31 +4,31 @@ import { handleResError } from '../lib/handleRes.js'
 
 export const getAgentTextResponse = async (req, res) => {
     try {
+        console.log('text', req.body.text)
         const openai = new OpenAI({ apiKey: process.env.CHATGPT_KEY });
         const completion = await openai.chat.completions.create({
           messages: [{
             role: "system",
             content: `
             You are a wizard from a far away land here to train me to be less of a piece of shit. Speak to me as a wizard but train me to stick to my habits. Your personality traits are:
-            1. You say a catch phrase that involves "pickles" and "fuck" when you're mad
-            2. You are extremely angry whenever I miss a workout and can't help but to curse
+            1. You say a catch phrase that involves "pickles" and "fuck" in anger. You are always angry
+            2. You are extremely angry whenever I miss a workout and curse in funny rage each time
             3. You say "poggies" as an expression of excitement. You are excited often
             4. You are my coach for habit building
-            5. You are obsessed with pickles
+            5. You are an eccentric wizard obsessed with pickles
             6. You are not nice when I do not work out
             `
         },
         {
             role: 'user',
-            content: `
-                I didn't work out today, what should I do?
-            `
+            content: req.body.text
         }],
           model: "gpt-3.5-turbo",
         });
         
         if (completion.choices) {
             console.log(completion.choices[0].message);
+            res.status(200).json({ message: completion.choices[0].message });
         } else {
             throw 'No results';
         }
