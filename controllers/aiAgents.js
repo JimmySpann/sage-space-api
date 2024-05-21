@@ -4,7 +4,6 @@ import { handleResError } from '../lib/handleRes.js'
 
 export const getAgentTextResponse = async (req, res) => {
     try {
-        console.log('text', req.body.text)
         const openai = new OpenAI({ apiKey: process.env.CHATGPT_KEY });
         const completion = await openai.chat.completions.create({
           messages: [{
