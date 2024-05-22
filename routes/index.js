@@ -3,6 +3,7 @@ import tasks from './tasks.js';
 import lists from './lists.js';
 import aiAgents from './aiAgents.js';
 import habits from './habits.js';
+import workSession from './workSession.js';
 
 const routes = {
     auth,
@@ -10,6 +11,7 @@ const routes = {
     lists,
     aiAgents,
     habits,
+    workSession,
 };
 
 export default routes;
