@@ -15,6 +15,7 @@ const create = async (req, res) => {
       _id: createdWorkSession._id,
       name: createdWorkSession.name,
       category: createdWorkSession.category,
+      rating: createdWorkSession.rating,
       start_time: createdWorkSession.start_time,
       end_time: createdWorkSession.end_time,
       timer_to_end: createdWorkSession.timer_to_end,

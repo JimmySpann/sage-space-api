@@ -5,7 +5,13 @@ const workSessionSchema = mongoose.Schema({
     type: String,
     required: [true, 'Work Session name needed'],
   },
+  description: {
+    type: String,
+  },
   category: {
+    type: String,
+  },
+  rating: {
     type: String,
   },
   start_time: {
@@ -15,7 +21,7 @@ const workSessionSchema = mongoose.Schema({
   end_time: {
     type: Date
   },
-  timer_to_end: {
+  timer_at_end: {
     type: Boolean,
     required: [true],
     default: false,
