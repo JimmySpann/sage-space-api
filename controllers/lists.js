@@ -41,7 +41,7 @@ const addTaskToList = (req, res) => {
     if (err) console.log('Error in games#show:', err);
     const listId = req.listId;
     const taskId = req.taskId;
-    console.log('foundList', foundList, err);
+    console.log('foundList', foundList, err, listId, taskId);
     foundList.tasks.push(taskId);
     db.List.findByIdAndUpdate(listId, foundList, { new: true }, (err, updatedList) => {
       if (err) console.log('Error in games#update:', err);

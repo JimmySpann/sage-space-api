@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 const db = require('../models');
 
 
-// REGISTER CONTROLLER
 const register = async (req, res) => {
   // VALIDATE FIELD INPUT
   if (!req.body.username || !req.body.email || !req.body.password) {
@@ -49,7 +48,6 @@ const register = async (req, res) => {
 };
 
 
-// LOGIN CONTROLLER
 const login = async (req, res) => {
   console.log(req.body);
   let body = req.body;
@@ -96,7 +94,6 @@ const login = async (req, res) => {
 };
 
 
-// REGISTER CONTROLLER
 const verify = async (req, res) => {
   // GET TOKEN FROM REQUEST HEADER
   const token = req.headers['authorization'];
