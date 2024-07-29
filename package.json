@@ -2,12 +2,12 @@
   "name": "sage-space-api",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
   },
-  "author": "GA SEI",
+  "author": "Jimmy Spann",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -17,9 +17,5 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.16",
     "nodemon": "^2.0.4"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://git.generalassemb.ly/r-sei-12/gamelib-api.git"
   }
 }
