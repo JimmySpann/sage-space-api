@@ -1,4 +1,4 @@
-const db = require('../models');
+import db from '../models/index.js';
 
 const index = (req, res) => {
   db.WorkTime.find({}, (err, foundNotes) => {
@@ -44,11 +44,12 @@ const destroy = (req, res) => {
   });
 };
 
-
-module.exports = {
-    index,
-    show,
-    create,
-    update,
-    destroy,
+const controls = {
+  index,
+  show,
+  create,
+  update,
+  destroy,
 };
+
+export default controls;

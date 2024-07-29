@@ -1,4 +1,4 @@
-const db = require('../models');
+import db from '../models/index.js';
 
 const index = (req, res) => {
   db.Event.find({}, (err, foundEvents) => {
@@ -41,10 +41,12 @@ const destroy = (req, res) => {
   });
 };
 
-module.exports = {
+const controls = {
     index,
     show,
     create,
     update,
     destroy,
 };
+
+export default controls;

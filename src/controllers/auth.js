@@ -1,6 +1,7 @@
-const bcrypt = require('bcryptjs');
-const jwt = require("jsonwebtoken");
-const db = require('../models');
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+
+import db from '../models/index.js';
 
 
 const register = async (req, res) => {
@@ -94,38 +95,9 @@ const login = async (req, res) => {
   }
 };
 
-
-const verify = async (req, res) => {
-  const token = req.headers['authorization'];
-  console.log(req.headers)
-  console.log('Verify Token ---> ', token);
-
-  jwt.verify(token, process.env.JWT_SECRET, (err, decodedUser) => {
-    if (err || !decodedUser) {
-      return res.status(401).json({
-        message: 'You are not authorized. Please login and try again'
-      });
-    }
-    console.log(decodedUser);
-    // const foundUser = await db.User.findOne({ email: body.email });
-    // const user = {
-    //   token,
-    //   email: foundUser.email,
-    //   displayName: foundUser.displayName,
-    //   imageURL: foundUser.imageURL
-    // };
-
-    res.status(200).json({user: decodedUser});
-
-    // ********** --- --- **********
-    // CALL NEXT AS MIDDLEWARE FUNCTION
-    // next();
-  });
-};
-
-
-module.exports = {
+const controls = {
   register,
   login,
-  verify,
 };
+
+export default controls;

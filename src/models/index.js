@@ -1,17 +1,17 @@
-const mongoose = require('mongoose');
+import User from './User.js';
+import Task from './Task.js';
+import Note from './Note.js';
+import WorkTime from './WorkTime.js';
+import Event from './Event.js';
+import List from './List.js';
 
-const connectionString = process.env.MONGODB_URI;
-const configOptions = { };
+const models = {
+    User,
+    Task,
+    Note,
+    WorkTime,
+    Event,
+    List,
+}
 
-mongoose.connect(connectionString, configOptions)
-    .then(() => console.log('MongoDB successfully connected...'))
-    .catch(err => console.log(`MongoDB connection error: ${err}`));
-
-module.exports = {
-    User: require('./User'),
-    Task: require('./Task'),
-    Note: require('./Note'),
-    WorkTime: require('./WorkTime'),
-    Event: require('./Event'),
-    List: require('./List'),
-};
+export default models;

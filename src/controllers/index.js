@@ -1,8 +1,17 @@
-module.exports = {
-    auth: require('./auth'),
-    tasks: require('./tasks'),
-    notes: require('./notes'),
-    workTime: require('./workTime'),
-    events: require('./events'),
-    lists: require('./lists')
+import auth from './auth.js';
+import tasks from './tasks.js';
+import notes from './notes.js';
+import workTime from './workTime.js';
+import events from './events.js';
+import lists from './lists.js';
+
+const controllers = {
+    auth,
+    tasks,
+    notes,
+    workTime,
+    events,
+    lists,
 };
+
+export default controllers;

@@ -1,14 +1,14 @@
-// imports
-const router = require('express').Router();
-const ctrl = require('../controllers');
-const authRequired = require('../middleware/authRequired');
+import { Router } from 'express';
+import controllers from '../controllers/index.js';
+import { authRequired } from '../middleware/authRequired.js';
 
-// routes
-router.get('/', authRequired, ctrl.events.index);
-router.get('/:id', authRequired, ctrl.events.show);
-router.post('/', authRequired, ctrl.events.create);
-router.put('/:id', authRequired, ctrl.events.update);
-router.delete('/:id', authRequired, ctrl.events.destroy);
+const { events } = controllers;
+const router = Router();
 
-// exports
-module.exports = router;
+router.get('/', authRequired, events.index);
+router.get('/:id', authRequired, events.show);
+router.post('/', authRequired, events.create);
+router.put('/:id', authRequired, events.update);
+router.delete('/:id', authRequired, events.destroy);
+
+export default router;
