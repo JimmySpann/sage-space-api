@@ -20,7 +20,7 @@ mongoose.connect(connectionString, configOptions)
     .then(() => console.log('MongoDB successfully connected...'))
     .catch(err => console.log(`MongoDB connection error: ${err}`));
 
-const controllers = {
+const models = {
     User,
     Task,
     List,
@@ -29,4 +29,4 @@ const controllers = {
     WorkSession
 };
 
-export default controllers;
+export default models;

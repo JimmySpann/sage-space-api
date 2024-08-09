@@ -1,4 +1,3 @@
-// imports
 import { Router } from 'express';
 import ctrl from '../controllers/index.js';
 

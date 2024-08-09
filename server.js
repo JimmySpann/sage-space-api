@@ -24,5 +24,7 @@ app.use('/api/v1/tasks', routes.tasks);
 app.use('/api/v1/lists', routes.lists);
 app.use('/api/v1/aiAgents', routes.aiAgents);
 app.use('/api/v1/habits', routes.habits);
+app.use('/api/v1/workSessions', routes.workSessions);
+
 
 app.listen(port, () => console.log(`Server is running on port ${port}`));

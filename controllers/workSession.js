@@ -2,6 +2,19 @@ import db from '../models/index.js';
 import { checkUserPermissions } from '../lib/permissions.js'
 import { handleResError } from '../lib/handleRes.js'
 
+const index = async (req, res) => {
+  try {
+    const userId = req.currentUser.id
+    const foundLists = await db.List
+      .find({ 'users.id':  userId, 'users.role': 'owner' })
+      .populate({ path: 'items', model: 'Task' });  
+    res.status(200).json(foundLists);
+  } catch(error) {
+    const message = 'Something went wrong. Please try again';
+    handleResError(res, error, message, 500);
+  }
+};
+
 const create = async (req, res) => {
   try {
     const { body, currentUser } = req;

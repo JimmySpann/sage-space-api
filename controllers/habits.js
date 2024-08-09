@@ -58,7 +58,6 @@ const update = async (req, res) => {
     const { body, currentUser, params } = req;
 
     delete body.users; // to prevent permission changes;
-    console.log('test');
     const permissionsError = await checkUserPermissions(params.id, currentUser, ['owner'], 'Habit');
     if (permissionsError) {
       return res.status(permissionsError.status).json({ message: permissionsError.message })
