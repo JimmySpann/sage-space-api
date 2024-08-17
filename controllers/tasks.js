@@ -34,7 +34,11 @@ const create = async (req, res) => {
       listId: foundList._id
     };
 
-    res.status(200).json(parsedTask);
+    res.status(200).json({
+      task: parsedTask,
+      listId: foundList._id,
+      message: 'Task successfully created.'
+    });
   }
   catch (error) {
     const message = 'Something went wrong. Please try again';
