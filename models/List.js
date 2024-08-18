@@ -17,6 +17,9 @@ const listSchema = mongoose.Schema({
       message: '{VALUE} is not supported'
     }
   },
+  isSubList: {
+    type: Boolean,
+  },
   users: {
     type: Array,
     items: {

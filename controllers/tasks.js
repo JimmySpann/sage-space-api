@@ -6,7 +6,6 @@ const create = async (req, res) => {
   try {
     const { body, currentUser } = req;
     
-    // add currentUser as user in task (not used)
     body.user = [currentUser.id];
 
     const permissionsError = await checkUserPermissions(body.listId, currentUser, ['owner', 'edit']);
@@ -18,7 +17,9 @@ const create = async (req, res) => {
 
     const foundList = await db.List.findById(body.listId).catch(error => { throw error });
     foundList.items.push(createdTask._id);
-    const updatedList = await db.List.findByIdAndUpdate(body.listId, foundList, { new: true }).catch(error => { throw error });
+
+    const updatedList = await db.List.findByIdAndUpdate(body.listId, foundList, { new: true })
+      .catch(error => { throw error });
     if(!updatedList) {
       const message = 'Failed to update list';
       return handleResError(res, error, message, 500);

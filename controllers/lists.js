@@ -5,10 +5,12 @@ import { handleResError } from '../lib/handleRes.js'
 
 const index = async (req, res) => {
   try {
-    const userId = req.currentUser.id
+    const userId = req.currentUser.id;
+
     const foundLists = await db.List
       .find({ 'users.id':  userId, 'users.role': 'owner' })
-      .populate({ path: 'items', model: 'Task' });  
+      .populate({ path: 'items', model: 'Task' });
+
     res.status(200).json(foundLists);
   } catch(error) {
     const message = 'Something went wrong. Please try again';
@@ -16,12 +18,20 @@ const index = async (req, res) => {
   }
 };
 
-const show = (req, res) => {
-  // db.List.findById(req.params.id, (err, foundList) => {
-  //   if (err) console.log('Error in lists#show:', err);
-  // }).populate('tasks').exec((err, foundList) => {
-  //   res.status(200).send(foundList);
-  // });
+const show = async (req, res) => {
+  try {
+    const listId = req.params.id;
+    const userId = req.currentUser.id;
+
+    const foundLists = await db.List
+      .find({ 'users.id':  userId, 'users.role': 'owner', _id: listId })
+      .populate({ path: 'items', model: 'Task' });
+
+    res.status(200).json(foundLists);
+  } catch(error) {
+    const message = 'Something went wrong. Please try again';
+    handleResError(res, error, message, 500);
+  }
 };
 
 const create = async (req, res) => {
@@ -35,7 +45,8 @@ const create = async (req, res) => {
     }];
 
     // create list
-    const createdList = await db.List.create(req.body).catch(err => { throw err });
+    const createdList = await db.List.create(req.body)
+      .catch(err => { throw err });
 
     // parse list
     const parsedList = {
