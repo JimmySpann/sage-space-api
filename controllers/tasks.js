@@ -82,11 +82,38 @@ const destroy = async (req, res) => {
   }
 };
 
+const destroyCompleted = async (req, res) => {
+  // Not well built. Come back and fix some time. - JS 1/24/24
+  try {
+    const listId = req?.params?.id;
+    console.log(req.params);
+
+    const list = await db.List.findById(listId)
+      .populate({ path: 'items', model: 'Task' })
+      .catch(error => { throw error });
+
+    const tasksToDelete = list.items
+      .filter(task => task.isCompleted)
+      .map(task => task._id)
+
+    const { deletedCount } = await db.Task
+      .deleteMany({ _id: { $in: tasksToDelete }})
+      .catch(error => { throw error });
+    
+    res.status(200).json({ message: `${deletedCount} tasks deleted.` });
+  }
+  catch (error) {
+    const message = 'Something went wrong. Please try again';
+    handleResError(res, error, message, 500);
+  }
+};
+
 
 const controllers = {
     create,
     update,
     destroy,
+    destroyCompleted
 };
 
 export default controllers;
