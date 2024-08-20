@@ -74,7 +74,7 @@ const login = async (req, res) => {
       email: foundUser.email,
     };
     const secret = process.env.JWT_SECRET;
-    const expiration = {expiresIn: "3h"};
+    // const expiration = {expiresIn: "3h"};
     
     // SIGN TOKEN
     const token = await jwt.sign(payload, secret, expiration);
