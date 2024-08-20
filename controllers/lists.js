@@ -11,7 +11,11 @@ const index = async (req, res) => {
       .find({ 'users.id':  userId, 'users.role': 'owner' })
       .populate({ path: 'items', model: 'Task' });
 
-    res.status(200).json(foundLists);
+   const userLists = await db.List
+    .find({ 'users.id':  userId, 'users.role': 'owner' })
+    .select('_id name')
+
+    res.status(200).json({ foundLists, userLists });
   } catch(error) {
     const message = 'Something went wrong. Please try again';
     handleResError(res, error, message, 500);
@@ -27,7 +31,11 @@ const show = async (req, res) => {
       .find({ 'users.id':  userId, 'users.role': 'owner', _id: listId })
       .populate({ path: 'items', model: 'Task' });
 
-    res.status(200).json(foundLists);
+    const userLists = await db.List
+      .find({ 'users.id':  userId, 'users.role': 'owner' })
+      .select('_id name')
+
+    res.status(200).json({ foundLists, userLists });
   } catch(error) {
     const message = 'Something went wrong. Please try again';
     handleResError(res, error, message, 500);
